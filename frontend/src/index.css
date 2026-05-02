@@ -33,7 +33,12 @@
     font-size: 16px;
   }
 }
-
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #f7f6f3;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;

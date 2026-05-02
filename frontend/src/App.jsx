@@ -5,6 +5,7 @@ import { useChatStore } from './store/chatStrore'
 
 function App() {
   const user = useChatStore((state) => state.user);
+  
 
   return (
     <BrowserRouter>

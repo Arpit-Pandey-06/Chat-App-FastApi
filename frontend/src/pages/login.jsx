@@ -11,19 +11,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!username.trim()) return;
     setLoading(true);
-    
     try {
-      // 1. Call your FastAPI Backend
       const data = await loginUser(username);
-      
-      // 2. If successful, update global state
       setUser(username);
-      
-      // sending session for websocket
-      sessionStorage.setItem("sessionId",data.sessionId)
-
-      // 3. Redirect to Chat
       navigate('/chat');
     } catch (err) {
       alert("Login Failed: " + err.message);
@@ -33,38 +25,155 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-900 px-4">
-      <div className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">Welcome Back</h1>
-          <p className="text-gray-400 mt-2">Enter a username to join the real-time chat</p>
+    <div style={{
+      minHeight: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#f7f6f3',
+      fontFamily: "'DM Sans', sans-serif",
+      padding: '1.25rem 1rem',
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:wght@500&display=swap');
+        *, *::before, *::after { box-sizing: border-box; }
+        .login-input { transition: border-color 0.2s, background 0.2s; }
+        .login-input:focus { border-color: #1a1a1a !important; background: #fff !important; outline: none; }
+        .login-btn { transition: background 0.2s; }
+        .login-btn:hover:not(:disabled) { background: #333 !important; }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        @media (max-width: 420px) {
+          .login-card { padding: 2rem 1.25rem !important; border-radius: 16px !important; }
+          .login-title { font-size: 22px !important; }
+          .login-sub { font-size: 13px !important; }
+        }
+      `}</style>
+
+      <div
+        className="login-card"
+        style={{
+          background: '#fff',
+          border: '0.5px solid #e0ddd8',
+          borderRadius: '20px',
+          padding: '2.5rem 2rem',
+          width: '100%',
+          maxWidth: '380px',
+        }}
+      >
+        {/* Logo mark */}
+        <div style={{
+          width: '38px',
+          height: '38px',
+          background: '#1a1a1a',
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '1.75rem',
+        }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
-            <input 
-              className="w-full p-4 rounded-xl bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-              placeholder="e.g. arpit_dev"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              disabled={loading}
-            />
-          </div>
+        <h1
+          className="login-title"
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '26px',
+            fontWeight: '500',
+            color: '#1a1a1a',
+            margin: '0 0 0.35rem',
+          }}
+        >
+          Welcome back
+        </h1>
+        <p
+          className="login-sub"
+          style={{
+            fontSize: '13.5px',
+            color: '#888',
+            margin: '0 0 2rem',
+            fontWeight: '300',
+            lineHeight: '1.5',
+          }}
+        >
+          Enter your username to join the conversation
+        </p>
 
-          <button 
+        <form onSubmit={handleLogin}>
+          <label style={{
+            display: 'block',
+            fontSize: '11.5px',
+            fontWeight: '500',
+            color: '#555',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            marginBottom: '0.4rem',
+          }}>
+            Username
+          </label>
+          <input
+            className="login-input"
+            type="text"
+            placeholder="e.g. arpit_dev"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            disabled={loading}
+            style={{
+              width: '100%',
+              border: '1px solid #e0ddd8',
+              borderRadius: '10px',
+              padding: '0.75rem 0.9rem',
+              fontSize: '15px',
+              fontFamily: "'DM Sans', sans-serif",
+              color: '#1a1a1a',
+              background: '#fafaf8',
+            }}
+          />
+
+          <button
+            className="login-btn"
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50"
+            style={{
+              width: '100%',
+              marginTop: '1rem',
+              background: '#1a1a1a',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '0.85rem',
+              fontSize: '15px',
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: '500',
+              cursor: 'pointer',
+              letterSpacing: '0.01em',
+            }}
           >
             {loading ? "Connecting..." : "Join Chat Room"}
           </button>
         </form>
-        
-        <p className="text-center text-xs text-gray-500 mt-6 uppercase tracking-widest">
-          FastAPI + Redis + WebSockets
-        </p>
+
+        <div style={{
+          marginTop: '1.5rem',
+          textAlign: 'center',
+          fontSize: '11px',
+          color: '#c0bdb8',
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+        }}>
+          <span>FastAPI</span>
+          <span style={{ width: '3px', height: '3px', background: '#d0cdc8', borderRadius: '50%', display: 'inline-block' }} />
+          <span>Redis</span>
+          <span style={{ width: '3px', height: '3px', background: '#d0cdc8', borderRadius: '50%', display: 'inline-block' }} />
+          <span>WebSockets</span>
+        </div>
       </div>
     </div>
   );

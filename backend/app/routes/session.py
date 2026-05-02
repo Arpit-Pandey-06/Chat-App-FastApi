@@ -4,6 +4,7 @@ from app.services.auth import sessionId,setCookies
 from redis.asyncio import Redis
 from app.dependencies.get_current import current_user
 from app.schema.user_schema import LoginSchema
+import json
 
 
 router = APIRouter(tags=["SessionID"])
@@ -20,4 +21,7 @@ async def login(data:LoginSchema,res:Response,redis:Redis=Depends(get_connection
 
 @router.get("/me")
 async def get_cuurent_user(user = Depends(current_user)):
-    return user
+    return {
+        "username":user["username"],
+        "sessionId":user["sessionId"]
+    }
