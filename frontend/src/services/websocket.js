@@ -3,7 +3,7 @@ import { useChatStore } from "../store/chatStrore";
 let socket = null;
 
 const WS_URL = import.meta.env.VITE_WS_URL
-console.log(WS_URL);
+console.log(WS_URL);  
 
 export const connectWebSocket = (username) => {
   socket = new WebSocket(WS_URL);
