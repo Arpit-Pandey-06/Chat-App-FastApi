@@ -12,8 +12,8 @@ webrouter = APIRouter()
 async def websocket_route(websocket:WebSocket,redis=Depends(get_connection)):
 
     #getting Session id from cookies
-    print("Cookies: ", websocket.cookies)
-    session_id = websocket.cookies.get("sessionId")
+    print("Cookies: ", websocket.query_params.get("sessionId"))
+    session_id = websocket.query_params.get("sessionId")
     print("websocket cookie :",session_id)
     if not session_id:
          await websocket.close(code=40001,reason="cookies not have user")

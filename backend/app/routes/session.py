@@ -11,8 +11,12 @@ router = APIRouter(tags=["SessionID"])
 @router.post("/login")
 async def login(data:LoginSchema,res:Response,redis:Redis=Depends(get_connection)):
    id = await sessionId(data.username,redis)
+   print(id)
    setCookies(id,res)
-   return {"message":"ok"}
+   return {
+       "message":"ok",
+       "sessionId":id
+       }
 
 @router.get("/me")
 async def get_cuurent_user(user = Depends(current_user)):

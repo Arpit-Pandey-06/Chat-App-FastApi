@@ -5,8 +5,8 @@ let socket = null;
 const WS_URL = import.meta.env.VITE_WS_URL
 console.log(WS_URL);  
 
-export const connectWebSocket = (username) => {
-  socket = new WebSocket(WS_URL);
+export const connectWebSocket = (username,sessionId) => {
+  socket = new WebSocket(`${WS_URL}?sessionId=${sessionId}`);
 
   socket.onopen = () => {
     console.log("✅ Connected");

@@ -18,7 +18,8 @@ export default function Chat() {
   // 🔌 Connect once
   useEffect(() => {
     if (user) {
-      connectWebSocket(user);
+      const sessionId = sessionStorage.getItem("sessionId")
+      connectWebSocket(user,sessionId);
     }
   }, [user]);
 

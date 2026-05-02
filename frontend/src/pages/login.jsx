@@ -15,11 +15,14 @@ const Login = () => {
     
     try {
       // 1. Call your FastAPI Backend
-      await loginUser(username);
+      const data = await loginUser(username);
       
       // 2. If successful, update global state
       setUser(username);
       
+      // sending session for websocket
+      sessionStorage.setItem("sessionId",data.sessionId)
+
       // 3. Redirect to Chat
       navigate('/chat');
     } catch (err) {
