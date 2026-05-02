@@ -1,4 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_URL
+console.log(API_BASE);
 
 console.log("Api ",API_BASE)
 export const loginUser = async (username) => {
