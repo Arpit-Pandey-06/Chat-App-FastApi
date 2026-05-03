@@ -40,8 +40,11 @@ useEffect(() => {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
         credentials: "include"
       });
+      console.log("/me response",res);
+      
       if (res.ok) {
         const data = await res.json();
+        console.log(data)
         connectWebSocket(user, data.sessionId);
       }
     } else {
@@ -52,7 +55,7 @@ useEffect(() => {
         const data = await res.json();
         setUser(data.username);
         connectWebSocket(data.username, data.sessionId);
-      } else {          // ← this was missing
+      } else {          
         navigate('/login');
       }
     }
